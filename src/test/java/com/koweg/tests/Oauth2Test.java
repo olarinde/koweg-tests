@@ -1,10 +1,14 @@
 package com.koweg.tests;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
 import io.restassured.RestAssured;
+import io.restassured.response.ValidatableResponse;
 
 public class Oauth2Test {
 
@@ -21,14 +25,20 @@ public class Oauth2Test {
 //          client_id=<your_client_id>&
 //          state=<your_state>
 
+
     @Test
     public void oauth2_authorisation_request_test() {
-        RestAssured.given()
-        .baseUri(BASE_URI)
-        .queryParam(RESPONSE_TYPE, "")
-        .queryParam(REDIRECT_URI, "")
-        .queryParam(CLIENT_ID, "")
-        .queryParam(STATE, "");
+        ValidatableResponse response = RestAssured.given()
+                    .baseUri(BASE_URI)
+                        .queryParam(RESPONSE_TYPE, "token")
+                        .queryParam(REDIRECT_URI, "http://invoice-koweg.rhcloud.com/dailylog/dailylogs")
+                        .queryParam(CLIENT_ID, "6381de92-d162-44d3-b949-f5ff8d502566")
+                        .queryParam(STATE, "active")
+                    .when()
+                        .get()
+                    .then()
+                         .statusCode(is(200));
+        System.out.println(response.extract().asString());
     }
 
 }
