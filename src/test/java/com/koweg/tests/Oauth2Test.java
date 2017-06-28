@@ -6,7 +6,13 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.util.concurrent.TimeUnit;
+
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+import com.koweg.tests.pages.LoginPageObject;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
@@ -35,9 +41,27 @@ public class Oauth2Test {
                     .then()
                          .statusCode(is(302))
                          .header("Location", is(notNullValue()));
+
+        String loginUri = response.extract().header("Location");
+
         System.out.println(response.extract().statusLine());
-        System.out.println(response.extract().header("Location"));
-        System.out.println("\n------- ALL HEADERS -------\n" + response.extract().headers().toString());
+        System.out.println(loginUri);
+//        System.out.println("\n------- ALL HEADERS -------\n" + response.extract().headers().toString());
+        
+//        WebDriver driver = new FirefoxDriver();
+//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//        driver.get(loginUri);
+//        
+//        LoginPageObject loginPageObject = new LoginPageObject(driver);
+//        assertThat(loginPageObject.isInitialised(), is(true));
+//        
+//        String _branch = "360";
+//        String _subAccount = "00";
+//        String _account = "4906341";
+//        String _password = "12345";
+//        loginPageObject.enterCredentials(_branch, _account, _subAccount, _password);
+        
+        
     }
 
 }
